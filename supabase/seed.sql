@@ -1,0 +1,2 @@
+-- Static OOPZ channel pairs are migration data, not seed data.
+-- Keep this file intentionally empty so production never depends on --include-seed.

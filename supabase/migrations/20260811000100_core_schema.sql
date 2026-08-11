@@ -41,10 +41,11 @@ create table public.rooms (
   status text not null default 'active' check (status in ('active', 'cancelled')),
   created_by uuid not null,
   voice_pair_id smallint not null references public.voice_channel_pairs(id),
-  voice_reserved_from timestamptz generated always as (start_at - interval '10 minutes') stored,
-  voice_reserved_until timestamptz generated always as (start_at + interval '60 minutes') stored,
+  voice_reserved_from timestamptz not null,
+  voice_reserved_until timestamptz not null,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
+  constraint rooms_voice_window_valid check (voice_reserved_until > voice_reserved_from),
   constraint rooms_voice_pair_no_overlap exclude using gist (
     voice_pair_id with =,
     tstzrange(voice_reserved_from, voice_reserved_until, '[)') with &&
@@ -141,7 +142,11 @@ as $$
 declare
   v_room_id uuid;
 begin
-  v_room_id := case when tg_table_name = 'rooms' then new.id else new.room_id end;
+  if tg_table_name = 'rooms' then
+    v_room_id := new.id;
+  else
+    v_room_id := new.room_id;
+  end if;
   update public.room_change_versions
   set revision = revision + 1,
       changed_at = now()

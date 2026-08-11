@@ -206,10 +206,11 @@ begin
     begin
       insert into public.rooms (
         id, room_code, title, start_at, host_nickname, host_qq, note,
-        created_by, voice_pair_id
+        created_by, voice_pair_id, voice_reserved_from, voice_reserved_until
       ) values (
         v_room_id, v_room_code, btrim(p_title), p_start_at, v_host_name,
-        p_host_qq, btrim(coalesce(p_note, '')), v_user_id, v_voice_pair_id
+        p_host_qq, btrim(coalesce(p_note, '')), v_user_id, v_voice_pair_id,
+        p_start_at - interval '10 minutes', p_start_at + interval '60 minutes'
       );
       v_inserted := true;
       exit;
@@ -443,6 +444,8 @@ begin
       host_qq = p_host_qq,
       note = btrim(coalesce(p_note, '')),
       voice_pair_id = v_voice_pair_id,
+      voice_reserved_from = p_start_at - interval '10 minutes',
+      voice_reserved_until = p_start_at + interval '60 minutes',
       updated_at = now()
   where id = v_room.id;
 

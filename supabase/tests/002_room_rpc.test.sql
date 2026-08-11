@@ -35,10 +35,12 @@ select lives_ok(
   $$select public.join_room_seat((select room_code from created_room), 'B', 1::smallint, '玩家2', '87654321', null::bigint)$$,
   'another player can join'
 );
+select set_config('request.jwt.claim.sub', '10000000-0000-0000-0000-000000000003', true);
 select throws_ok(
-  $$select public.join_room_seat((select room_code from created_room), 'B', 1::smallint, '玩家2', '87654321', null::bigint)$$,
+  $$select public.join_room_seat((select room_code from created_room), 'B', 1::smallint, '玩家3', '76543210', null::bigint)$$,
   'P0001', 'SEAT_TAKEN', 'occupied seat is rejected'
 );
+select set_config('request.jwt.claim.sub', '10000000-0000-0000-0000-000000000002', true);
 select throws_ok(
   $$select public.join_room_seat((select room_code from created_room), 'B', 2::smallint, '玩家2', '87654321', null::bigint)$$,
   'P0001', 'ALREADY_JOINED', 'one user cannot claim two seats'

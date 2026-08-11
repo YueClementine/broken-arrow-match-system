@@ -13,9 +13,13 @@ if (!supabaseUrl || !secretKey || !siteOrigin) {
 const backend = createClient(supabaseUrl, secretKey, {
   auth: { persistSession: false, autoRefreshToken: false },
 });
+const backendHostname = new URL(supabaseUrl).hostname;
+const developmentOrigins = ['localhost', '127.0.0.1'].includes(backendHostname)
+  ? ['http://localhost:5173', 'http://127.0.0.1:5173']
+  : [];
 
 const handler = createBatraceHandler({
-  allowedOrigins: [siteOrigin, 'http://localhost:5173', 'http://127.0.0.1:5173'],
+  allowedOrigins: [siteOrigin, ...developmentOrigins],
   timeoutMs: 8_000,
   now: () => new Date(),
   fetch,

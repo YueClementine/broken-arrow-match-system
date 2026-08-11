@@ -23,7 +23,10 @@ jobs:
           npx supabase db reset --local
           npx supabase test db --local
       - name: Export local browser variables
-        run: npx supabase status -o env >> "$GITHUB_ENV"
+        run: |
+          eval "$(npx supabase status -o env)"
+          echo "API_URL=$API_URL" >> "$GITHUB_ENV"
+          echo "ANON_KEY=$ANON_KEY" >> "$GITHUB_ENV"
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium firefox
       - name: Run browser acceptance tests

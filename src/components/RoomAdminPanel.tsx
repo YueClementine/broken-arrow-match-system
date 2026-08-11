@@ -59,6 +59,9 @@ export function RoomAdminPanel({ room, token, onChanged }: Props) {
 
   return (
     <section className="admin-panel">
+      <div className="admin-critical-action">
+        <button type="button" className="danger-button full-button" onClick={() => void cancel()} disabled={busy}>取消整场约战</button>
+      </div>
       <button type="button" className="admin-toggle" onClick={() => setOpen((value) => !value)} aria-expanded={open}>
         房主管理 <span>{open ? '收起' : '展开'}</span>
       </button>
@@ -73,10 +76,9 @@ export function RoomAdminPanel({ room, token, onChanged }: Props) {
             <label>备注<textarea rows={3} maxLength={300} value={note} onChange={(event) => setNote(event.target.value)} /></label>
             <button type="submit" className="primary-button full-button" disabled={busy}>保存修改</button>
           </form>
-          {message && <p className="field-hint" role="status">{message}</p>}
-          <button type="button" className="danger-button full-button" onClick={() => void cancel()} disabled={busy}>取消整场约战</button>
         </div>
       )}
+      {message && <p className="admin-message field-hint" role="status">{message}</p>}
     </section>
   );
 }

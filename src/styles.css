@@ -135,6 +135,8 @@ input::placeholder, textarea::placeholder { color: #58625e; }
 .mine-badge { padding: 4px 6px; background: var(--signal-dark); color: var(--signal); font-size: 10px; }
 .seat-actions { margin-top: 9px; padding-top: 7px; border-top: 1px dashed #293135; display: flex; flex-wrap: wrap; gap: 12px; }
 .admin-panel { margin-bottom: 14px; border: 1px solid #4a5738; background: #11160e; }
+.admin-critical-action { padding: 12px; border-bottom: 1px solid #4a5738; background: #21100e; }
+.admin-message { margin: 0; padding: 0 14px 14px; }
 .admin-toggle { width: 100%; min-height: 50px; border: 0; padding: 0 16px; display: flex; justify-content: space-between; align-items: center; background: transparent; color: #d7e6b8; font-weight: 800; cursor: pointer; }
 .admin-toggle span { color: var(--muted); font-size: 12px; }
 .admin-content { padding: 16px; border-top: 1px solid #38432c; display: grid; gap: 18px; }

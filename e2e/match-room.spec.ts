@@ -17,7 +17,7 @@ test('two anonymous players cannot take the same seat', async ({ browser }) => {
   await host.getByLabel('房间标题').fill('Playwright 约战');
   await host.getByLabel('开赛时间（北京时间）').fill(beijingInputInTwoHours());
   await host.getByLabel('游戏昵称').fill('房主');
-  await host.getByLabel('QQ').fill('12345678');
+  await host.getByRole('textbox', { name: 'QQ', exact: true }).fill('12345678');
   await host.getByRole('checkbox').check();
   await host.getByRole('button', { name: '创建约战' }).click();
   await expect(host.locator('.room-heading')).toContainText('Playwright 约战');
@@ -33,10 +33,10 @@ test('two anonymous players cannot take the same seat', async ({ browser }) => {
     second.locator('.team-b').getByRole('button', { name: '占这个位置' }).first().click(),
   ]);
   await first.getByLabel('游戏昵称').fill('玩家甲');
-  await first.getByLabel('QQ').fill('22345678');
+  await first.getByRole('textbox', { name: 'QQ', exact: true }).fill('22345678');
   await first.getByRole('checkbox').check();
   await second.getByLabel('游戏昵称').fill('玩家乙');
-  await second.getByLabel('QQ').fill('32345678');
+  await second.getByRole('textbox', { name: 'QQ', exact: true }).fill('32345678');
   await second.getByRole('checkbox').check();
   await Promise.all([
     first.getByRole('button', { name: '确认报名' }).click(),

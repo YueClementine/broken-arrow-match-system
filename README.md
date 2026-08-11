@@ -41,13 +41,14 @@ npx supabase db push --linked
 
 BATrace 功能默认关闭。Edge Function 需要以下 Secret：
 
-- `SUPABASE_SECRET_KEY`：Supabase 后端 Secret Key，只在 Edge 环境使用。
 - `SITE_ORIGIN`：正式 GitHub Pages Origin，例如 `https://example.github.io`。
+
+Edge Function 默认使用 Supabase 托管环境内置的 `SUPABASE_SERVICE_ROLE_KEY`；该值不会进入浏览器或 GitHub 仓库。
 
 部署：
 
 ```bash
-npx supabase secrets set --project-ref hgrtlpekoblnnysmcspx SUPABASE_SECRET_KEY=... SITE_ORIGIN=...
+npx supabase secrets set --project-ref hgrtlpekoblnnysmcspx SITE_ORIGIN=...
 npx supabase functions deploy batrace-profile --project-ref hgrtlpekoblnnysmcspx --no-verify-jwt
 ```
 
@@ -73,7 +74,6 @@ Repository/Environment Secrets：
 
 - `SUPABASE_ACCESS_TOKEN`
 - `SUPABASE_DB_PASSWORD`
-- `SUPABASE_SECRET_KEY`
 
 `CI` 在本地 Supabase 容器中运行 migration、pgTAP 和双浏览器验收。`Deploy Pages` 从 `main` 构建 GitHub Pages；`Deploy Supabase` 必须手动触发，避免误改线上数据库。
 

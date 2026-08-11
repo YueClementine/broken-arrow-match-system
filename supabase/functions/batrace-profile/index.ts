@@ -3,11 +3,11 @@ import { createBatraceHandler } from './core.ts';
 import type { PlayerCandidate, PlayerProfileSnapshot } from '../_shared/profileTransform.ts';
 
 const supabaseUrl = Deno.env.get('SUPABASE_URL');
-const secretKey = Deno.env.get('SUPABASE_SECRET_KEY');
+const secretKey = Deno.env.get('SUPABASE_SECRET_KEY') ?? Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
 const siteOrigin = Deno.env.get('SITE_ORIGIN');
 
 if (!supabaseUrl || !secretKey || !siteOrigin) {
-  throw new Error('SUPABASE_URL, SUPABASE_SECRET_KEY and SITE_ORIGIN are required');
+  throw new Error('SUPABASE_URL, a Supabase backend key and SITE_ORIGIN are required');
 }
 
 const backend = createClient(supabaseUrl, secretKey, {

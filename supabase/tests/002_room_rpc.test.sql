@@ -14,8 +14,8 @@ select * from public.create_room(
   '12345678',
   '备注',
   'A',
-  1,
-  null
+  1::smallint,
+  null::bigint
 );
 
 reset role;
@@ -32,15 +32,15 @@ select ok(length((select admin_token from created_room)) = 64, 'admin token is r
 select set_config('request.jwt.claim.sub', '10000000-0000-0000-0000-000000000002', true);
 set local role authenticated;
 select lives_ok(
-  $$select public.join_room_seat((select room_code from created_room), 'B', 1, '玩家2', '87654321', null)$$,
+  $$select public.join_room_seat((select room_code from created_room), 'B', 1::smallint, '玩家2', '87654321', null::bigint)$$,
   'another player can join'
 );
 select throws_ok(
-  $$select public.join_room_seat((select room_code from created_room), 'B', 1, '玩家2', '87654321', null)$$,
+  $$select public.join_room_seat((select room_code from created_room), 'B', 1::smallint, '玩家2', '87654321', null::bigint)$$,
   'P0001', 'SEAT_TAKEN', 'occupied seat is rejected'
 );
 select throws_ok(
-  $$select public.join_room_seat((select room_code from created_room), 'B', 2, '玩家2', '87654321', null)$$,
+  $$select public.join_room_seat((select room_code from created_room), 'B', 2::smallint, '玩家2', '87654321', null::bigint)$$,
   'P0001', 'ALREADY_JOINED', 'one user cannot claim two seats'
 );
 select lives_ok(

@@ -11,7 +11,7 @@ select set_config('request.jwt.claim.sub', '20000000-0000-0000-0000-000000000001
 set local role authenticated;
 create temporary table profiled_room as
 select * from public.create_room(
-  now() + interval '3 hours', '资料约战', 'ignored', '12345678', '', 'B', 3, 8863
+  now() + interval '3 hours', '资料约战', 'ignored', '12345678', '', 'B', 3::smallint, 8863::bigint
 );
 reset role;
 select is((select canonical_name from public.player_profiles where batrace_id = 8863), 'Raven', 'profile snapshot exists');
@@ -37,7 +37,7 @@ select lives_ok(
   'admin can reschedule room'
 );
 select lives_ok(
-  $$select public.admin_remove_player((select room_code from profiled_room), (select admin_token from profiled_room), 'B', 3)$$,
+  $$select public.admin_remove_player((select room_code from profiled_room), (select admin_token from profiled_room), 'B', 3::smallint)$$,
   'admin can clear a seat'
 );
 select lives_ok(
